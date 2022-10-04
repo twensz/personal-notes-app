@@ -1,8 +1,23 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
-import { getAllNotes } from '../utils/local-data';
+import { useNavigate } from 'react-router-dom';
 
+import { getAllNotes } from '../utils/local-data';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
+
+function HomePageWrapper() {
+  const navigate = useNavigate();
+
+  function navigateHome() {
+    navigate('/note/new');
+  }
+
+  return (
+    <HomePage navigate={navigateHome} />
+  );
+}
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -13,11 +28,18 @@ class HomePage extends React.Component {
       keyword: '',
     };
 
-    this.onKeywordChangeEventHandler = this.onKeywordChangeEventHandler.bind(this);
+    this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
+    this.onAddClickHandler = this.onAddClickHandler.bind(this);
   }
 
-  onKeywordChangeEventHandler(keyword) {
+  onKeywordChangeHandler(keyword) {
     this.setState({ keyword });
+  }
+
+  onAddClickHandler(event) {
+    event.preventDefault();
+    const { navigate } = this.props;
+    navigate();
   }
 
   render() {
@@ -26,11 +48,14 @@ class HomePage extends React.Component {
     return (
       <section>
         <h1>Catatan Aktif</h1>
-        <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeEventHandler} />
+        <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
         <NotesList notes={notes} />
+        <div className="homepage__action">
+          <button className="action" type="button" title="Tambah" onClick={this.onAddClickHandler}>+</button>
+        </div>
       </section>
     );
   }
 }
 
-export default HomePage;
+export default HomePageWrapper;

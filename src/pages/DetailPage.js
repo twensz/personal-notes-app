@@ -26,7 +26,6 @@ class DetailPage extends React.Component {
     const { note } = this.state;
 
     return (
-      // <h2 className="detail-page__title">{note.title}</h2>
       <NoteDetail note={note} />
     );
   }
