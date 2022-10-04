@@ -5,7 +5,7 @@ import Navigation from './Navigation';
 function NotesHeader() {
   return (
     <header>
-      <h1><Link to="/">Notes</Link></h1>
+      <h1><Link to="/">Catatan</Link></h1>
       <Navigation />
     </header>
   );
