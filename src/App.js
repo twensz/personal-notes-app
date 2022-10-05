@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import NotesHeader from './components/NotesHeader';
 import AddNotePageWrapper from './pages/AddNotePage';
+import ArchivedPageWrapper from './pages/ArchivedPage';
 import DetailPageWrapper from './pages/DetailPage';
 import HomePage from './pages/HomePage';
 
@@ -13,6 +14,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/archived" element={<ArchivedPageWrapper />} />
           <Route path="/note/:id" element={<DetailPageWrapper />} />
           <Route path="/note/new" element={<AddNotePageWrapper />} />
         </Routes>

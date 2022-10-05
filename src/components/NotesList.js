@@ -6,17 +6,15 @@ import NoteItem from './NoteItem';
 function NotesList({ notes }) {
   return (
     <div className="notes-list">
-      {notes.map((note) => <NoteItem key={note.id} note={note} />)}
+      {notes.length > 0
+        ? notes.map((note) => <NoteItem key={note.id} note={note} />)
+        : <div className="notes-list-empty"><p>Catatan tidak ditemukan</p></div>}
     </div>
   );
 }
 
 NotesList.propTypes = {
-  notes: PropTypes.arrayOf(PropTypes.object),
-};
-
-NotesList.defaultProps = {
-  notes: [],
+  notes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default NotesList;
