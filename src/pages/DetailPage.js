@@ -1,15 +1,20 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 
-import { getNote } from '../utils/local-data';
+import { getNote, deleteNote } from '../utils/local-data';
 import NoteDetail from '../components/NoteDetail';
 
 function DetailPageWrapper() {
+  const navigate = useNavigate();
   const { id } = useParams();
 
+  function navigateHome() {
+    navigate('/');
+  }
+
   return (
-    <DetailPage id={id} />
+    <DetailPage id={id} navigate={navigateHome} />
   );
 }
 
@@ -20,19 +25,29 @@ class DetailPage extends React.Component {
     this.state = {
       note: getNote(props.id),
     };
+
+    this.onDeleteClickHandler = this.onDeleteClickHandler.bind(this);
+  }
+
+  onDeleteClickHandler(id) {
+    deleteNote(id);
+
+    const { navigate } = this.props;
+    navigate();
   }
 
   render() {
     const { note } = this.state;
 
     return (
-      <NoteDetail note={note} />
+      <NoteDetail note={note} deleteNote={this.onDeleteClickHandler} />
     );
   }
 }
 
 DetailPage.propTypes = {
   id: PropTypes.string,
+  navigate: PropTypes.func.isRequired,
 };
 
 DetailPage.defaultProps = {

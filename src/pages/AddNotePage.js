@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { FiCheck } from 'react-icons/fi';
 
 import { addNote } from '../utils/local-data';
 
@@ -47,6 +48,7 @@ class AddNotePage extends React.Component {
     };
 
     addNote(note);
+
     const { navigate } = this.props;
     navigate();
   }
@@ -64,7 +66,9 @@ class AddNotePage extends React.Component {
           onChange={this.onBodyChangeHandler}
         />
         <div className="add-new-page__action">
-          <button className="action" type="submit" title="Simpan">+</button>
+          <button className="action" type="submit" title="Simpan">
+            <FiCheck />
+          </button>
         </div>
       </form>
     );
