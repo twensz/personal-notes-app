@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FiArchive, FiDelete } from 'react-icons/fi';
+import { FiDelete } from 'react-icons/fi';
+import { MdArchive, MdUnarchive } from 'react-icons/md';
 
 import showFormattedDate from '../utils';
 
-function NoteDetail({ note, deleteNote }) {
+function NoteDetail({
+  note, deleteNote, archiveNote, unarchiveNote,
+}) {
   const {
     id,
     title,
     createdAt,
     body,
+    archived,
   } = note;
 
   return (
@@ -24,9 +28,19 @@ function NoteDetail({ note, deleteNote }) {
         )
         : <h2 className="detail-page__not-found">Catatan tidak ditemukan</h2>}
       <div className="detail-page__action">
-        <button className="action" type="button" title="Arsipkan">
-          <FiArchive />
-        </button>
+        {
+          archived
+            ? (
+              <button className="action" type="button" title="Arsipkan" onClick={() => unarchiveNote(id)}>
+                <MdUnarchive />
+              </button>
+            )
+            : (
+              <button className="action" type="button" title="Arsipkan" onClick={() => archiveNote(id)}>
+                <MdArchive />
+              </button>
+            )
+        }
         <button className="action" type="button" title="Hapus" onClick={() => deleteNote(id)}>
           <FiDelete />
         </button>
@@ -38,6 +52,8 @@ function NoteDetail({ note, deleteNote }) {
 NoteDetail.propTypes = {
   note: PropTypes.object.isRequired,
   deleteNote: PropTypes.func.isRequired,
+  archiveNote: PropTypes.func.isRequired,
+  unarchiveNote: PropTypes.func.isRequired,
 };
 
 export default NoteDetail;

@@ -104,6 +104,24 @@ function editNote({ id, title, body }) {
   });
 }
 
+function searchActiveNotes(keyword) {
+  const activeNotes = getActiveNotes();
+  const searchedNotes = activeNotes.filter(
+    (note) => note.title.toLowerCase().includes(keyword.toLowerCase()),
+  );
+
+  return searchedNotes;
+}
+
+function searchArchivedNotes(keyword) {
+  const archivedNotes = getArchivedNotes();
+  const searchedNotes = archivedNotes.filter(
+    (note) => note.title.toLowerCase().includes(keyword.toLowerCase()),
+  );
+
+  return searchedNotes;
+}
+
 export {
   getAllNotes,
   getActiveNotes,
@@ -114,4 +132,6 @@ export {
   archiveNote,
   unarchiveNote,
   addNote,
+  searchActiveNotes,
+  searchArchivedNotes,
 };

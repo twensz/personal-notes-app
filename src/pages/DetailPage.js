@@ -1,8 +1,11 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 
-import { getNote, deleteNote } from '../utils/local-data';
+import {
+  getNote, deleteNote, archiveNote, unarchiveNote,
+} from '../utils/local-data';
 import NoteDetail from '../components/NoteDetail';
 
 function DetailPageWrapper() {
@@ -27,6 +30,22 @@ class DetailPage extends React.Component {
     };
 
     this.onDeleteClickHandler = this.onDeleteClickHandler.bind(this);
+    this.onArchiveClickHandler = this.onArchiveClickHandler.bind(this);
+    this.onUnarchiveClickHandler = this.onUnarchiveClickHandler.bind(this);
+  }
+
+  onArchiveClickHandler(id) {
+    archiveNote(id);
+
+    const { navigate } = this.props;
+    navigate();
+  }
+
+  onUnarchiveClickHandler(id) {
+    unarchiveNote(id);
+
+    const { navigate } = this.props;
+    navigate();
   }
 
   onDeleteClickHandler(id) {
@@ -40,7 +59,12 @@ class DetailPage extends React.Component {
     const { note } = this.state;
 
     return (
-      <NoteDetail note={note} deleteNote={this.onDeleteClickHandler} />
+      <NoteDetail
+        note={note}
+        deleteNote={this.onDeleteClickHandler}
+        archiveNote={this.onArchiveClickHandler}
+        unarchiveNote={this.onUnarchiveClickHandler}
+      />
     );
   }
 }

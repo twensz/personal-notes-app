@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FiPlus } from 'react-icons/fi';
 
-import { getActiveNotes } from '../utils/local-data';
+import { getActiveNotes, searchActiveNotes } from '../utils/local-data';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
 
@@ -33,7 +33,7 @@ class HomePage extends React.Component {
   }
 
   onKeywordChangeHandler(keyword) {
-    this.setState({ keyword });
+    this.setState({ keyword, notes: searchActiveNotes(keyword) });
   }
 
   onAddClickHandler(event) {

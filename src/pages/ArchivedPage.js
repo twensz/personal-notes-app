@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { getArchivedNotes } from '../utils/local-data';
+import { getArchivedNotes, searchArchivedNotes } from '../utils/local-data';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
 
@@ -32,7 +32,7 @@ class ArchivedPage extends React.Component {
   }
 
   onKeywordChangeHandler(keyword) {
-    this.setState({ keyword });
+    this.setState({ keyword, notes: searchArchivedNotes(keyword) });
   }
 
   onAddClickHandler(event) {
