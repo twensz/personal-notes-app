@@ -1,13 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { FiPlus } from 'react-icons/fi';
 
-import { getActiveNotes } from '../utils/local-data';
+import { getArchivedNotes } from '../utils/local-data';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
 
-function HomePageWrapper() {
+function ArchivedPageWrapper() {
   const navigate = useNavigate();
 
   function navigateHome() {
@@ -15,16 +14,16 @@ function HomePageWrapper() {
   }
 
   return (
-    <HomePage navigate={navigateHome} />
+    <ArchivedPage navigate={navigateHome} />
   );
 }
 
-class HomePage extends React.Component {
+class ArchivedPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      notes: getActiveNotes(),
+      notes: getArchivedNotes(),
       keyword: '',
     };
 
@@ -47,21 +46,16 @@ class HomePage extends React.Component {
 
     return (
       <section>
-        <h1>Catatan Aktif</h1>
+        <h1>Catatan Arsip</h1>
         <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
         <NotesList notes={notes} />
-        <div className="homepage__action">
-          <button className="action" type="button" title="Tambah" onClick={this.onAddClickHandler}>
-            <FiPlus />
-          </button>
-        </div>
       </section>
     );
   }
 }
 
-HomePage.propTypes = {
+ArchivedPage.propTypes = {
   navigate: PropTypes.func.isRequired,
 };
 
-export default HomePageWrapper;
+export default ArchivedPageWrapper;
