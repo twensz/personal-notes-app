@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FiCheck } from 'react-icons/fi';
 
+import Button from '../components/Button';
 import { addNote } from '../utils/local-data';
 
 function AddNotePageWrapper() {
@@ -54,7 +55,7 @@ class AddNotePage extends React.Component {
   }
 
   render() {
-    const { title, body } = this.state;
+    const { title } = this.state;
 
     return (
       <form className="add-new-page__input" onSubmit={this.onSubmitHandler}>
@@ -62,13 +63,10 @@ class AddNotePage extends React.Component {
         <textarea
           className="add-new-page__input__body"
           placeholder="Sebenarnya saya adalah ...."
-          value={body}
           onChange={this.onBodyChangeHandler}
         />
         <div className="add-new-page__action">
-          <button className="action" type="submit" title="Simpan">
-            <FiCheck />
-          </button>
+          <Button type="submit" title="Simpan"><FiCheck /></Button>
         </div>
       </form>
     );

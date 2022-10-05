@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import parser from 'html-react-parser';
 import { FiDelete } from 'react-icons/fi';
 import { MdArchive, MdUnarchive } from 'react-icons/md';
 
+import Button from './Button';
 import showFormattedDate from '../utils';
 
 function NoteDetail({
@@ -23,7 +25,7 @@ function NoteDetail({
           <>
             <h2 className="detail-page__title">{title}</h2>
             <p className="detail-page__createdAt">{showFormattedDate(createdAt)}</p>
-            <p className="detail-page__body">{body}</p>
+            <div className="detail-page__body">{parser(body)}</div>
           </>
         )
         : <h2 className="detail-page__not-found">Catatan tidak ditemukan</h2>}
@@ -31,19 +33,19 @@ function NoteDetail({
         {
           archived
             ? (
-              <button className="action" type="button" title="Arsipkan" onClick={() => unarchiveNote(id)}>
+              <Button className="action" type="button" title="Keluarkan" onClick={() => unarchiveNote(id)}>
                 <MdUnarchive />
-              </button>
+              </Button>
             )
             : (
-              <button className="action" type="button" title="Arsipkan" onClick={() => archiveNote(id)}>
+              <Button className="action" type="button" title="Arsipkan" onClick={() => archiveNote(id)}>
                 <MdArchive />
-              </button>
+              </Button>
             )
         }
-        <button className="action" type="button" title="Hapus" onClick={() => deleteNote(id)}>
+        <Button className="action" type="button" title="Hapus" onClick={() => deleteNote(id)}>
           <FiDelete />
-        </button>
+        </Button>
       </div>
     </div>
   );

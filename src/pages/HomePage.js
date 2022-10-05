@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { FiPlus } from 'react-icons/fi';
 
 import { getActiveNotes, searchActiveNotes } from '../utils/local-data';
+import Button from '../components/Button';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
 
@@ -51,9 +52,9 @@ class HomePage extends React.Component {
         <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
         <NotesList notes={notes} />
         <div className="homepage__action">
-          <button className="action" type="button" title="Tambah" onClick={this.onAddClickHandler}>
+          <Button type="button" title="Tambah" onClick={this.onAddClickHandler}>
             <FiPlus />
-          </button>
+          </Button>
         </div>
       </section>
     );

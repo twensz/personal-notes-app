@@ -210,6 +210,33 @@ main {
   color: var(--on-background-grey);
 }
 
+.not-found-page {
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.not-found-page__title {
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+  color: var(--on-background);
+  font-family: "Inter", sans-serif;
+  font-size: 64px;
+  font-weight: bold;
+}
+
+.not-found-page__body {
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+  color: var(--on-background);
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  padding: 8px 0;
+  min-height: 500px;
+}
+
 .toggle-theme,
 .toggle-locale {
   background-color: transparent;

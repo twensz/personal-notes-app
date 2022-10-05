@@ -6,6 +6,7 @@ import AddNotePageWrapper from './pages/AddNotePage';
 import ArchivedPageWrapper from './pages/ArchivedPage';
 import DetailPageWrapper from './pages/DetailPage';
 import HomePage from './pages/HomePage';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/archived" element={<ArchivedPageWrapper />} />
           <Route path="/note/:id" element={<DetailPageWrapper />} />
           <Route path="/note/new" element={<AddNotePageWrapper />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>
     </div>

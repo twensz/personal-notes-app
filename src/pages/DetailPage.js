@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
@@ -7,6 +6,7 @@ import {
   getNote, deleteNote, archiveNote, unarchiveNote,
 } from '../utils/local-data';
 import NoteDetail from '../components/NoteDetail';
+import PageNotFound from './PageNotFound';
 
 function DetailPageWrapper() {
   const navigate = useNavigate();
@@ -58,6 +58,10 @@ class DetailPage extends React.Component {
   render() {
     const { note } = this.state;
 
+    if (note === undefined) {
+      return <PageNotFound />;
+    }
+
     return (
       <NoteDetail
         note={note}
@@ -70,12 +74,8 @@ class DetailPage extends React.Component {
 }
 
 DetailPage.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
   navigate: PropTypes.func.isRequired,
-};
-
-DetailPage.defaultProps = {
-  id: null,
 };
 
 export default DetailPageWrapper;
