@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { FiPlus } from 'react-icons/fi';
 
 import { getActiveNotes } from '../utils/network-data';
@@ -9,67 +8,37 @@ import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
 import LocaleContext from '../contexts/LocaleContext';
 
-function HomePageWrapper() {
+function HomePage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const title = searchParams.get('title');
+  const [notes, setNotes] = React.useState([]);
+  const [keyword, setKeyword] = React.useState();
+  const [initializing, setInitializing] = React.useState(true);
 
-  function changeSearchParams(keyword) {
-    setSearchParams({ title: keyword });
-  }
-
-  function navigateHome() {
-    navigate('/note/new');
-  }
-
-  return (
-    <HomePage navigate={navigateHome} title={title} onSearch={changeSearchParams} />
-  );
-}
-
-class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      notes: [],
-      keyword: props.title || '',
-      initializing: true,
+  React.useEffect(() => {
+    const fetchNotes = async () => {
+      const { data } = await getActiveNotes();
+      setNotes(data);
     };
 
-    this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
-    this.onAddClickHandler = this.onAddClickHandler.bind(this);
-  }
+    fetchNotes();
+    setKeyword(searchParams.get('keyword') || '');
+    setInitializing(false);
+  }, []);
 
-  async componentDidMount() {
-    const { data } = await getActiveNotes();
+  const onKeywordChangeHandler = (keywordInput) => {
+    setKeyword(keywordInput);
+    setSearchParams({ keyword: keywordInput });
+  };
 
-    this.setState({ notes: data, initializing: false });
-  }
+  const onAddClickHandler = () => navigate('/note/new');
 
-  onKeywordChangeHandler(keyword) {
-    this.setState({ keyword });
-    const { onSearch } = this.props;
-    onSearch(keyword);
-  }
+  const filteredNotes = () => notes.filter(
+    (note) => note.title.toLowerCase().includes(keyword.toLowerCase()),
+  );
 
-  onAddClickHandler(event) {
-    event.preventDefault();
-    const { navigate } = this.props;
-    navigate();
-  }
-
-  filteredNotes() {
-    const { notes, keyword } = this.state;
-    return notes.filter(
-      (note) => note.title.toLowerCase().includes(keyword.toLowerCase()),
-    );
-  }
-
-  render() {
-    const { initializing, keyword } = this.state;
-
+  const render = () => {
     if (initializing) {
       return (
         <div className="loader-container">
@@ -83,10 +52,10 @@ class HomePage extends React.Component {
         {({ locale }) => (
           <section>
             <h1>{locale === 'id' ? 'Catatan Aktif' : 'Active Notes'}</h1>
-            <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
-            <NotesList notes={this.filteredNotes()} />
+            <SearchBar keyword={keyword} keywordChange={onKeywordChangeHandler} />
+            <NotesList notes={filteredNotes()} />
             <div className="homepage__action">
-              <Button type="button" title={locale === 'id' ? 'Tambah' : 'add'} onClick={this.onAddClickHandler}>
+              <Button type="button" title={locale === 'id' ? 'Tambah' : 'add'} onClick={onAddClickHandler}>
                 <FiPlus />
               </Button>
             </div>
@@ -94,17 +63,9 @@ class HomePage extends React.Component {
         )}
       </LocaleContext.Consumer>
     );
-  }
+  };
+
+  return render();
 }
 
-HomePage.propTypes = {
-  navigate: PropTypes.func.isRequired,
-  onSearch: PropTypes.func.isRequired,
-  title: PropTypes.string,
-};
-
-HomePage.defaultProps = {
-  title: '',
-};
-
-export default HomePageWrapper;
+export default HomePage;
