@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { FiCheck } from 'react-icons/fi';
 
 import Button from '../components/Button';
-import { addNote } from '../utils/local-data';
+import { addNote } from '../utils/network-data';
+import LocaleContext from '../contexts/LocaleContext';
 
 function AddNotePageWrapper() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ class AddNotePage extends React.Component {
     this.setState({ body: event.target.value });
   }
 
-  onSubmitHandler(event) {
+  async onSubmitHandler(event) {
     event.preventDefault();
     const { title, body } = this.state;
     const note = {
@@ -48,7 +49,7 @@ class AddNotePage extends React.Component {
       body,
     };
 
-    addNote(note);
+    await addNote(note);
 
     const { navigate } = this.props;
     navigate();
@@ -58,17 +59,21 @@ class AddNotePage extends React.Component {
     const { title } = this.state;
 
     return (
-      <form className="add-new-page__input" onSubmit={this.onSubmitHandler}>
-        <input type="text" className="add-new-page__input__title" value={title} onChange={this.onTitleChangeHandler} placeholder="Judul catatan" />
-        <textarea
-          className="add-new-page__input__body"
-          placeholder="Sebenarnya saya adalah ...."
-          onChange={this.onBodyChangeHandler}
-        />
-        <div className="add-new-page__action">
-          <Button type="submit" title="Simpan"><FiCheck /></Button>
-        </div>
-      </form>
+      <LocaleContext.Consumer>
+        {({ locale }) => (
+          <form className="add-new-page__input" onSubmit={this.onSubmitHandler}>
+            <input type="text" className="add-new-page__input__title" value={title} onChange={this.onTitleChangeHandler} placeholder={locale === 'id' ? 'Judul catatam ...' : 'Note title ...'} />
+            <textarea
+              className="add-new-page__input__body"
+              placeholder={locale === 'id' ? 'Detail catatan ...' : 'Note detail ...'}
+              onChange={this.onBodyChangeHandler}
+            />
+            <div className="add-new-page__action">
+              <Button type="submit" title={locale === 'id' ? 'Simpan' : 'Save'}><FiCheck /></Button>
+            </div>
+          </form>
+        )}
+      </LocaleContext.Consumer>
     );
   }
 }

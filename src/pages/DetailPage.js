@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 
 import {
   getNote, deleteNote, archiveNote, unarchiveNote,
-} from '../utils/local-data';
+} from '../utils/network-data';
 import NoteDetail from '../components/NoteDetail';
 import PageNotFound from './PageNotFound';
 
@@ -26,7 +26,8 @@ class DetailPage extends React.Component {
     super(props);
 
     this.state = {
-      note: getNote(props.id),
+      note: {},
+      initializing: true,
     };
 
     this.onDeleteClickHandler = this.onDeleteClickHandler.bind(this);
@@ -34,32 +35,44 @@ class DetailPage extends React.Component {
     this.onUnarchiveClickHandler = this.onUnarchiveClickHandler.bind(this);
   }
 
-  onArchiveClickHandler(id) {
-    archiveNote(id);
+  async componentDidMount() {
+    const { id } = this.props;
+    const { data } = await getNote(id);
+    this.setState({ note: data, initializing: false });
+  }
+
+  async onArchiveClickHandler(id) {
+    await archiveNote(id);
 
     const { navigate } = this.props;
     navigate();
   }
 
-  onUnarchiveClickHandler(id) {
-    unarchiveNote(id);
+  async onUnarchiveClickHandler(id) {
+    await unarchiveNote(id);
 
     const { navigate } = this.props;
     navigate();
   }
 
-  onDeleteClickHandler(id) {
-    deleteNote(id);
+  async onDeleteClickHandler(id) {
+    await deleteNote(id);
 
     const { navigate } = this.props;
     navigate();
   }
 
   render() {
-    const { note } = this.state;
+    const { note, initializing } = this.state;
 
     if (note === undefined) {
       return <PageNotFound />;
+    }
+
+    if (initializing) {
+      return (
+        <h2>Initializing ...</h2>
+      );
     }
 
     return (
