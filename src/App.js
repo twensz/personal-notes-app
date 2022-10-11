@@ -67,18 +67,9 @@ function App() {
   const render = () => {
     if (initializing) {
       return (
-        <AuthedUserContext.Provider value={authedUserContextValue}>
-          <ThemeContext.Provider value={themeContextValue}>
-            <LocaleContext.Provider value={localeContextValue}>
-              <div className="app-container">
-                <NotesHeader />
-                <main>
-                  <h2>Initializing ...</h2>
-                </main>
-              </div>
-            </LocaleContext.Provider>
-          </ThemeContext.Provider>
-        </AuthedUserContext.Provider>
+        <div className="loader-container">
+          <div className="spinner" />
+        </div>
       );
     }
 

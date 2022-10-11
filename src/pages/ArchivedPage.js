@@ -34,6 +34,7 @@ class ArchivedPage extends React.Component {
     this.state = {
       notes: [],
       keyword: props.title || '',
+      initializing: true,
     };
 
     this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
@@ -42,7 +43,7 @@ class ArchivedPage extends React.Component {
 
   async componentDidMount() {
     const { data } = await getArchivedNotes();
-    this.setState({ notes: data });
+    this.setState({ notes: data, initializing: false });
   }
 
   onAddClickHandler(event) {
@@ -65,7 +66,15 @@ class ArchivedPage extends React.Component {
   }
 
   render() {
-    const { keyword } = this.state;
+    const { initializing, keyword } = this.state;
+
+    if (initializing) {
+      return (
+        <div className="loader-container">
+          <div className="spinner" />
+        </div>
+      );
+    }
 
     return (
       <LocaleContext.Consumer>

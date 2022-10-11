@@ -35,6 +35,7 @@ class HomePage extends React.Component {
     this.state = {
       notes: [],
       keyword: props.title || '',
+      initializing: true,
     };
 
     this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
@@ -44,7 +45,7 @@ class HomePage extends React.Component {
   async componentDidMount() {
     const { data } = await getActiveNotes();
 
-    this.setState({ notes: data });
+    this.setState({ notes: data, initializing: false });
   }
 
   onKeywordChangeHandler(keyword) {
@@ -67,7 +68,15 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { keyword } = this.state;
+    const { initializing, keyword } = this.state;
+
+    if (initializing) {
+      return (
+        <div className="loader-container">
+          <div className="spinner" />
+        </div>
+      );
+    }
 
     return (
       <LocaleContext.Consumer>
