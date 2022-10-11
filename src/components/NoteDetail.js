@@ -25,7 +25,7 @@ function NoteDetail({
           <>
             <h2 className="detail-page__title">{title}</h2>
             <p className="detail-page__createdAt">{showFormattedDate(createdAt)}</p>
-            <div className="detail-page__body">{parser(body)}</div>
+            <div className="detail-page__body">{parser(body || 'initializing')}</div>
           </>
         )
         : <h2 className="detail-page__not-found">Catatan tidak ditemukan</h2>}
