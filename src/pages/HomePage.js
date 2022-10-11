@@ -7,6 +7,7 @@ import { getActiveNotes } from '../utils/network-data';
 import Button from '../components/Button';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
+import LocaleContext from '../contexts/LocaleContext';
 
 function HomePageWrapper() {
   const navigate = useNavigate();
@@ -69,16 +70,20 @@ class HomePage extends React.Component {
     const { keyword } = this.state;
 
     return (
-      <section>
-        <h1>Catatan Aktif</h1>
-        <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
-        <NotesList notes={this.filteredNotes()} />
-        <div className="homepage__action">
-          <Button type="button" title="Tambah" onClick={this.onAddClickHandler}>
-            <FiPlus />
-          </Button>
-        </div>
-      </section>
+      <LocaleContext.Consumer>
+        {({ locale }) => (
+          <section>
+            <h1>{locale === 'id' ? 'Catatan Aktif' : 'Active Notes'}</h1>
+            <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
+            <NotesList notes={this.filteredNotes()} />
+            <div className="homepage__action">
+              <Button type="button" title={locale === 'id' ? 'Tambah' : 'add'} onClick={this.onAddClickHandler}>
+                <FiPlus />
+              </Button>
+            </div>
+          </section>
+        )}
+      </LocaleContext.Consumer>
     );
   }
 }

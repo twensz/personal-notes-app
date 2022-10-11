@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { getArchivedNotes } from '../utils/network-data';
 import SearchBar from '../components/SearchBar';
 import NotesList from '../components/NotesList';
+import LocaleContext from '../contexts/LocaleContext';
 
 function ArchivedPageWrapper() {
   const navigate = useNavigate();
@@ -67,11 +68,15 @@ class ArchivedPage extends React.Component {
     const { keyword } = this.state;
 
     return (
-      <section>
-        <h1>Catatan Arsip</h1>
-        <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
-        <NotesList notes={this.filteredNotes()} />
-      </section>
+      <LocaleContext.Consumer>
+        {({ locale }) => (
+          <section>
+            <h1>{locale === 'id' ? 'Catatan Terarsip' : 'Archived Notes'}</h1>
+            <SearchBar keyword={keyword} keywordChange={this.onKeywordChangeHandler} />
+            <NotesList notes={this.filteredNotes()} />
+          </section>
+        )}
+      </LocaleContext.Consumer>
     );
   }
 }
